@@ -16,9 +16,11 @@ public class Pipe extends Scrollable {
 	public float VERTICAL_GAP = ORIGINAL_VERTICAL_GAP; //static final 45
 	public static final int SKULL_WIDTH = 24;
 	public static final int SKULL_HEIGHT = 11;
-	private float accelerate=0.2f;
+	private float pipeAcceleration=0.2f;
+	private float bmp;
 	private boolean accelerateChange=false;
 	private float groundY;
+	
 
 	private boolean isScored = false;
 
@@ -41,6 +43,7 @@ public class Pipe extends Scrollable {
 	public void update(float delta) {
 		// Call the update method in the superclass (Scrollable)
 		super.update(delta);
+		pipeAcceleration=caculateAcceleration(bmp);
 		//Change the accelerate while reaching the biggest or the smallest gap
 		if(VERTICAL_GAP<=NARROWEST_VERTICAL_GAP)
 		{
@@ -58,11 +61,11 @@ public class Pipe extends Scrollable {
 		}
 		if(accelerateChange)
 		{
-			VERTICAL_GAP+=accelerate;
+			VERTICAL_GAP+=pipeAcceleration;
 		}
 		else
 		{
-			VERTICAL_GAP-=accelerate;
+			VERTICAL_GAP-=pipeAcceleration;
 		}
 		
 		// The set() method allows you to set the top left corner's x, y
@@ -132,4 +135,17 @@ public class Pipe extends Scrollable {
 	public void setScored(boolean b) {
 		isScored = b;
 	}
+	public float getBmp()
+	{
+		return bmp;
+	}
+	public void setBmp(float bmp)
+	{
+		this.bmp=bmp;
+	}
+	public float caculateAcceleration(float bmp)
+	{
+		return pipeAcceleration=bmp/100;
+	}
+	
 }

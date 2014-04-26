@@ -27,9 +27,9 @@ public class HeartBeatService extends IntentService {
         while (running) {
             Intent localIntent = new Intent(BROADCAST_ACTION).putExtra(EXTENDED_DATA_BPM, bpm);
             LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
-            bpm += random.nextInt(5) - 3;
+            bpm += random.nextInt(1)-5;
             if (bpm < 50) {
-                bpm = 50;
+                bpm = 100;
             }
             try {
                 Thread.sleep(1000);
