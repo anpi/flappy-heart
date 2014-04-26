@@ -114,8 +114,8 @@ public class GameRenderer {
 
     private void drawSkulls() {
         for (Pipe p : pipes) {
-            batcher.draw(skullUp, p.getX() - 1, p.getY() + p.getHeight() - 14, 24, 14);
-            batcher.draw(skullDown, p.getX() - 1, p.getY() + p.getHeight() + 45, 24, 14);
+            batcher.draw(skullUp, p.getX() - 1, p.getY() + p.getHeight() - 14+(Pipe.ORIGINAL_VERTICAL_GAP-p.VERTICAL_GAP)/2, 24, 14);
+            batcher.draw(skullDown, p.getX() - 1, p.getY() + p.getHeight() + p.VERTICAL_GAP-(Pipe.ORIGINAL_VERTICAL_GAP-p.VERTICAL_GAP)/2, 24, 14);
         }
     }
 
