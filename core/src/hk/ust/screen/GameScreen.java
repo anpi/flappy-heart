@@ -7,17 +7,20 @@ import hk.ust.world.GameWorld;
 import hk.ust.helper.InputHandler;
 
 public class GameScreen implements Screen {
+	public static final int GAME_WIDTH = 250;
+	public static final int READY_WIDTH = 68;
+	public static final int SCORE_BOARD_WIDTH = 97;
 
 	private GameWorld world;
 	private GameRenderer renderer;
 	private float runTime;
 
-	// This is the constructor, not the class declaration
 	public GameScreen() {
-
 		float screenWidth = Gdx.graphics.getWidth();
 		float screenHeight = Gdx.graphics.getHeight();
-		float gameWidth = 270;//136 
+		
+		float gameWidth = GAME_WIDTH;
+
 		float gameHeight = screenHeight / (screenWidth / gameWidth);
 		int midPointY = (int) (gameHeight / 2);
 

@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+
 import hk.ust.model.Bird;
 import hk.ust.world.GameWorld;
+import hk.ust.screen.GameScreen;
 import hk.ust.ui.SimpleButton;
 
 public class InputHandler implements InputProcessor {
@@ -32,7 +34,7 @@ public class InputHandler implements InputProcessor {
 
 		menuButtons = new ArrayList<SimpleButton>();
 		playButton = new SimpleButton(
-				136 / 2 - (AssetLoader.playButtonUp.getRegionWidth() / 2),
+				GameScreen.GAME_WIDTH / 2 - (AssetLoader.playButtonUp.getRegionWidth() / 2),
 				midPointY + 50, 29, 16, AssetLoader.playButtonUp,
 				AssetLoader.playButtonDown);
 		menuButtons.add(playButton);

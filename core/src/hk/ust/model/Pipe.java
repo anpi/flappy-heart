@@ -12,6 +12,7 @@ public class Pipe extends Scrollable {
 	private Rectangle skullUp, skullDown, barUp, barDown;
 
 	public static final int ORIGINAL_VERTICAL_GAP=80;
+	public static final int NARROWEST_VERTICAL_GAP=70;
 	public float VERTICAL_GAP = ORIGINAL_VERTICAL_GAP; //static final 45
 	public static final int SKULL_WIDTH = 24;
 	public static final int SKULL_HEIGHT = 11;
@@ -43,7 +44,7 @@ public class Pipe extends Scrollable {
 		System.out.println(VERTICAL_GAP);
 		System.out.println(accelerateChange);
 		//Change the accelerate while reaching the biggest or the smallest gap
-		if(VERTICAL_GAP<=70)
+		if(VERTICAL_GAP<=NARROWEST_VERTICAL_GAP)
 		{
 			if(!accelerateChange)
 			{
