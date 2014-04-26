@@ -18,8 +18,8 @@ public class FlappyHeart extends Game {
         this.bpm = bpm;
     }
     
-    public int getBpm() {
-        return bpm.get();
+    public AtomicInteger getBpm() {
+        return bpm;
     }
 
     @Override

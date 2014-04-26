@@ -210,6 +210,14 @@ public class GameRenderer {
                 GameScreen.GAME_WIDTH / 2 - (3 * length), midPointY / 6);
     }
 
+    private void drawBpm() {
+        int length = ("" + myWorld.getBpm()).length();
+        AssetLoader.shadow.draw(batcher, "" + myWorld.getBpm(),
+                GameScreen.GAME_WIDTH / 6 - (3 * length), midPointY / 6 + 1);
+        AssetLoader.font.draw(batcher, "" + myWorld.getBpm(),
+                GameScreen.GAME_WIDTH / 6 - (3 * length), midPointY / 6);
+    }
+
     private void drawHighScore() {
         batcher.draw(highScore, getDrawX(96), midPointY - 50, 96, 14);
     }
@@ -243,6 +251,8 @@ public class GameRenderer {
 
         batcher.enableBlending();
         drawSkulls();
+        
+        drawBpm();
 
         if (myWorld.isRunning()) {
             drawBird(runTime);
