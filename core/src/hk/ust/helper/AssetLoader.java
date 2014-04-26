@@ -1,5 +1,7 @@
 package hk.ust.helper;
 
+import hk.ust.screen.GameScreen;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
@@ -35,7 +37,7 @@ public class AssetLoader {
 		playButtonUp.flip(false, true);
 		playButtonDown.flip(false, true);
 
-		ready = new TextureRegion(texture, 59, 83, 34, 7);
+		ready = new TextureRegion(texture, 59, 83, 34, 7); 
 		ready.flip(false, true);
 
 		retry = new TextureRegion(texture, 59, 110, 33, 7);
