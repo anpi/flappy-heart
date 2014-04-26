@@ -45,7 +45,7 @@ public class GameRenderer {
 
     // Game Assets
     private TextureRegion bg, grass, birdMid, skullUp, skullDown, bar, ready,
-            zbLogo, gameOver, highScore, scoreboard, star, noStar, retry;
+            logo, gameOver, highScore, scoreboard, star, noStar, retry;
     private Animation birdAnimation;
 
     // Tween stuff
@@ -95,7 +95,7 @@ public class GameRenderer {
         skullDown = AssetLoader.skullDown;
         bar = AssetLoader.bar;
         ready = AssetLoader.ready;
-        zbLogo = AssetLoader.zbLogo;
+        logo = AssetLoader.zbLogo;
         gameOver = AssetLoader.gameOver;
         highScore = AssetLoader.highScore;
         scoreboard = AssetLoader.scoreboard;
@@ -149,8 +149,8 @@ public class GameRenderer {
     }
 
     private void drawMenuUI() {
-        batcher.draw(zbLogo, GameScreen.GAME_WIDTH / 2 - 56, midPointY - 50,
-                zbLogo.getRegionWidth() / 1.2f, zbLogo.getRegionHeight() / 1.2f);
+        batcher.draw(logo, GameScreen.GAME_WIDTH / 2 - 56, midPointY - 50,
+                logo.getRegionWidth() / 1.2f, logo.getRegionHeight() / 1.2f);
 
         for (SimpleButton button : menuButtons) {
             button.draw(batcher);
@@ -158,40 +158,40 @@ public class GameRenderer {
     }
 
     private void drawScoreboard() {
-        batcher.draw(scoreboard, 22, midPointY - 30, 97, 37);
-        batcher.draw(noStar, 25, midPointY - 15, 10, 10);
-        batcher.draw(noStar, 37, midPointY - 15, 10, 10);
-        batcher.draw(noStar, 49, midPointY - 15, 10, 10);
-        batcher.draw(noStar, 61, midPointY - 15, 10, 10);
-        batcher.draw(noStar, 73, midPointY - 15, 10, 10);
+        batcher.draw(scoreboard, getDrawX(97), midPointY - 30, 97, 37);
+        batcher.draw(noStar, getDrawX(97) - 22 + 25, midPointY - 15, 10, 10);
+        batcher.draw(noStar, getDrawX(97) - 22 + 37, midPointY - 15, 10, 10);
+        batcher.draw(noStar, getDrawX(97) - 22 + 49, midPointY - 15, 10, 10);
+        batcher.draw(noStar, getDrawX(97) - 22 + 61, midPointY - 15, 10, 10);
+        batcher.draw(noStar, getDrawX(97) - 22 + 73, midPointY - 15, 10, 10);
 
         if (myWorld.getScore() > 2) {
-            batcher.draw(star, 73, midPointY - 15, 10, 10);
+            batcher.draw(star, getDrawX(97) - 22 + 73, midPointY - 15, 10, 10);
         }
         if (myWorld.getScore() > 17) {
-            batcher.draw(star, 61, midPointY - 15, 10, 10);
+            batcher.draw(star, getDrawX(97) - 22 + 61, midPointY - 15, 10, 10);
         }
         if (myWorld.getScore() > 50) {
-            batcher.draw(star, 49, midPointY - 15, 10, 10);
+            batcher.draw(star, getDrawX(97) - 22 + 49, midPointY - 15, 10, 10);
         }
         if (myWorld.getScore() > 80) {
-            batcher.draw(star, 37, midPointY - 15, 10, 10);
+            batcher.draw(star, getDrawX(97) - 22 + 37, midPointY - 15, 10, 10);
         }
         if (myWorld.getScore() > 120) {
-            batcher.draw(star, 25, midPointY - 15, 10, 10);
+            batcher.draw(star, getDrawX(97) - 22 + 25, midPointY - 15, 10, 10);
         }
         int length = ("" + myWorld.getScore()).length();
 
         AssetLoader.whiteFont.draw(batcher, "" + myWorld.getScore(),
-                104 - (2 * length), midPointY - 20);
+                getDrawX(97) - 22 + 104 - (2 * length), midPointY - 20);
 
         int length2 = ("" + AssetLoader.getHighScore()).length();
         AssetLoader.whiteFont.draw(batcher, "" + AssetLoader.getHighScore(),
-                104 - (2.5f * length2), midPointY - 3);
+                getDrawX(97) - 22 + 104 - (2.5f * length2), midPointY - 3);
     }
 
     private void drawRetry() {
-        batcher.draw(retry, 36, midPointY + 10, 66, 14);
+        batcher.draw(retry, getDrawX(66), midPointY + 10, 66, 14);
     }
 
     private void drawReady() {
@@ -200,19 +200,27 @@ public class GameRenderer {
     }
 
     private void drawGameOver() {
-        batcher.draw(gameOver, 24, midPointY - 50, 92, 14);
+        batcher.draw(gameOver, getDrawX(92), midPointY / 5, 92, 14);
     }
 
     private void drawScore() {
         int length = ("" + myWorld.getScore()).length();
         AssetLoader.shadow.draw(batcher, "" + myWorld.getScore(),
-                68 - (3 * length), midPointY - 82);
+                GameScreen.GAME_WIDTH / 2 - (3 * length), midPointY / 6 + 1);
         AssetLoader.font.draw(batcher, "" + myWorld.getScore(),
-                68 - (3 * length), midPointY - 83);
+                GameScreen.GAME_WIDTH / 2 - (3 * length), midPointY / 6);
+    }
+
+    private void drawBpm() {
+        int length = ("" + myWorld.getBpm()).length();
+        AssetLoader.shadow.draw(batcher, "" + myWorld.getBpm(),
+                GameScreen.GAME_WIDTH / 6 - (3 * length), midPointY / 6 + 1);
+        AssetLoader.font.draw(batcher, "" + myWorld.getBpm(),
+                GameScreen.GAME_WIDTH / 6 - (3 * length), midPointY / 6);
     }
 
     private void drawHighScore() {
-        batcher.draw(highScore, 22, midPointY - 50, 96, 14);
+        batcher.draw(highScore, getDrawX(96), midPointY - 50, 96, 14);
     }
 
     public void render(float delta, float runTime) {
@@ -244,6 +252,8 @@ public class GameRenderer {
 
         batcher.enableBlending();
         drawSkulls();
+        
+        drawBpm();
 
         if (myWorld.isRunning()) {
             drawBird(runTime);

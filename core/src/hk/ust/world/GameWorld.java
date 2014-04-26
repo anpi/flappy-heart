@@ -1,7 +1,10 @@
 package hk.ust.world;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+
 import hk.ust.model.Bird;
 import hk.ust.model.ScrollHandler;
 import hk.ust.helper.AssetLoader;
@@ -9,6 +12,7 @@ import hk.ust.helper.AssetLoader;
 public class GameWorld {
 
 	private Bird bird;
+	private AtomicInteger bpm;
 	private ScrollHandler scroller;
 	private Rectangle ground;
 	private int score = 0;
@@ -22,13 +26,18 @@ public class GameWorld {
 		MENU, READY, RUNNING, GAMEOVER, HIGHSCORE
 	}
 
-	public GameWorld(int midPointY) {
+	public GameWorld(int midPointY, AtomicInteger bpm) {
 		currentState = GameState.MENU;
 		this.midPointY = midPointY;
 		bird = new Bird(33, midPointY - 5, 17, 12);
 		// The grass should start 66 pixels below the midPointY
 		scroller = new ScrollHandler(this, midPointY + 66);
 		ground = new Rectangle(0, midPointY + 66, 137, 11);
+		this.bpm = bpm;
+	}
+	
+	public int getBpm() {
+	    return bpm.get();
 	}
 
 	public void update(float delta) {
