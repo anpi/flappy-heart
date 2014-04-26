@@ -117,34 +117,36 @@ public class GameRenderer {
 		batcher.draw(skullUp, pipe1.getX() - 1,
 				pipe1.getY() + pipe1.getHeight() - 14, 24, 14);
 		batcher.draw(skullDown, pipe1.getX() - 1,
-				pipe1.getY() + pipe1.getHeight() + 45, 24, 14);
+				pipe1.getY() + pipe1.getHeight() + pipe1.VERTICAL_GAP, 24, 14);
 
 		batcher.draw(skullUp, pipe2.getX() - 1,
 				pipe2.getY() + pipe2.getHeight() - 14, 24, 14);
 		batcher.draw(skullDown, pipe2.getX() - 1,
-				pipe2.getY() + pipe2.getHeight() + 45, 24, 14);
+				pipe2.getY() + pipe2.getHeight() + pipe2.VERTICAL_GAP, 24, 14);
 
 		batcher.draw(skullUp, pipe3.getX() - 1,
 				pipe3.getY() + pipe3.getHeight() - 14, 24, 14);
 		batcher.draw(skullDown, pipe3.getX() - 1,
-				pipe3.getY() + pipe3.getHeight() + 45, 24, 14);
+				pipe3.getY() + pipe3.getHeight() + pipe3.VERTICAL_GAP, 24, 14);
 	}
 
 	private void drawPipes() {
 		batcher.draw(bar, pipe1.getX(), pipe1.getY(), pipe1.getWidth(),
-				pipe1.getHeight());
-		batcher.draw(bar, pipe1.getX(), pipe1.getY() + pipe1.getHeight() + 45,
-				pipe1.getWidth(), midPointY + 66 - (pipe1.getHeight() + 45));
-
+				pipe1.getHeight()+(Pipe.ORIGINAL_VERTICAL_GAP-pipe1.VERTICAL_GAP)/2);
+//		batcher.draw(bar, pipe1.getX(), pipe1.getY() + pipe1.getHeight() + 45,// vertical_gap=45
+//				pipe1.getWidth(), midPointY + 66 - (pipe1.getHeight() + 45));
+		batcher.draw(bar, pipe1.getX(), pipe1.getY() + pipe1.getHeight() + pipe1.VERTICAL_GAP-(Pipe.ORIGINAL_VERTICAL_GAP-pipe1.VERTICAL_GAP)/2,// vertical_gap=45
+				pipe1.getWidth(), midPointY + 66 - (pipe1.getY() + pipe1.getHeight() + pipe1.VERTICAL_GAP-(Pipe.ORIGINAL_VERTICAL_GAP-pipe1.VERTICAL_GAP)/2));
+		
 		batcher.draw(bar, pipe2.getX(), pipe2.getY(), pipe2.getWidth(),
-				pipe2.getHeight());
-		batcher.draw(bar, pipe2.getX(), pipe2.getY() + pipe2.getHeight() + 45,
-				pipe2.getWidth(), midPointY + 66 - (pipe2.getHeight() + 45));
+				pipe2.getHeight()+(Pipe.ORIGINAL_VERTICAL_GAP-pipe1.VERTICAL_GAP)/2);
+		batcher.draw(bar, pipe2.getX(), pipe2.getY() + pipe2.getHeight() + pipe2.VERTICAL_GAP-(Pipe.ORIGINAL_VERTICAL_GAP-pipe2.VERTICAL_GAP)/2,
+				pipe2.getWidth(), midPointY + 66 - (pipe2.getY() + pipe2.getHeight() + pipe2.VERTICAL_GAP-(Pipe.ORIGINAL_VERTICAL_GAP-pipe3.VERTICAL_GAP)/2));
 
 		batcher.draw(bar, pipe3.getX(), pipe3.getY(), pipe3.getWidth(),
-				pipe3.getHeight());
-		batcher.draw(bar, pipe3.getX(), pipe3.getY() + pipe3.getHeight() + 45,
-				pipe3.getWidth(), midPointY + 66 - (pipe3.getHeight() + 45));
+				pipe3.getHeight()+(Pipe.ORIGINAL_VERTICAL_GAP-pipe1.VERTICAL_GAP)/2);
+		batcher.draw(bar, pipe3.getX(), pipe3.getY() + pipe3.getHeight() + pipe3.VERTICAL_GAP-(Pipe.ORIGINAL_VERTICAL_GAP-pipe3.VERTICAL_GAP)/2,
+				pipe3.getWidth(), midPointY + 66 - (pipe3.getY() + pipe3.getHeight() + pipe3.VERTICAL_GAP-(Pipe.ORIGINAL_VERTICAL_GAP-pipe3.VERTICAL_GAP)/2));
 	}
 
 	private void drawBirdCentered(float runTime) {

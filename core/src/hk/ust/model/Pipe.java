@@ -11,9 +11,12 @@ public class Pipe extends Scrollable {
 
 	private Rectangle skullUp, skullDown, barUp, barDown;
 
-	public static final int VERTICAL_GAP = 45;
+	public static final int ORIGINAL_VERTICAL_GAP=80;
+	public float VERTICAL_GAP = ORIGINAL_VERTICAL_GAP; //static final 45
 	public static final int SKULL_WIDTH = 24;
 	public static final int SKULL_HEIGHT = 11;
+	private float accelerate=0.2f;
+	private boolean accelerateChange=false;
 	private float groundY;
 
 	private boolean isScored = false;
@@ -37,14 +40,40 @@ public class Pipe extends Scrollable {
 	public void update(float delta) {
 		// Call the update method in the superclass (Scrollable)
 		super.update(delta);
-
+		System.out.println(VERTICAL_GAP);
+		System.out.println(accelerateChange);
+		//Change the accelerate while reaching the biggest or the smallest gap
+		if(VERTICAL_GAP<=70)
+		{
+			if(!accelerateChange)
+			{
+				accelerateChange=true;
+			}
+//			VERTICAL_GAP=ORIGINAL_VERTICAL_GAP;
+		}
+		else if(VERTICAL_GAP>=ORIGINAL_VERTICAL_GAP)
+		{
+			if(accelerateChange)
+			{
+				accelerateChange=false;
+			}
+		}
+		if(accelerateChange)
+		{
+			VERTICAL_GAP+=accelerate;
+		}
+		else
+		{
+			VERTICAL_GAP-=accelerate;
+		}
+		
 		// The set() method allows you to set the top left corner's x, y
 		// coordinates,
 		// along with the width and height of the rectangle
-
-		barUp.set(position.x, position.y, width, height);
-		barDown.set(position.x, position.y + height + VERTICAL_GAP, width,
-				groundY - (position.y + height + VERTICAL_GAP));
+		
+		barUp.set(position.x, position.y, width, height+(ORIGINAL_VERTICAL_GAP-VERTICAL_GAP)/2);
+		barDown.set(position.x, position.y + height + ORIGINAL_VERTICAL_GAP-(ORIGINAL_VERTICAL_GAP-VERTICAL_GAP)/2, width,
+				groundY - (position.y + height + ORIGINAL_VERTICAL_GAP-(ORIGINAL_VERTICAL_GAP-VERTICAL_GAP)/2));
 
 		// Our skull width is 24. The bar is only 22 pixels wide. So the skull
 		// must be shifted by 1 pixel to the left (so that the skull is centered
