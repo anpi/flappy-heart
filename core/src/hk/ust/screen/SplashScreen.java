@@ -1,7 +1,8 @@
 package hk.ust.screen;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
+import hk.ust.flappyheart.FlappyHeart;
+import hk.ust.helper.AssetLoader;
+import hk.ust.tween.SpriteAccessor;
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
@@ -13,10 +14,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import hk.ust.tween.SpriteAccessor;
-import hk.ust.helper.AssetLoader;
-import hk.ust.flappyheart.FlappyHeart;;
 
 public class SplashScreen implements Screen {
 

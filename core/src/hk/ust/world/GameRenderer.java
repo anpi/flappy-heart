@@ -214,7 +214,7 @@ public class GameRenderer {
         int length = ("" + myWorld.getBpm()).length();
         AssetLoader.shadow.draw(batcher, "" + myWorld.getBpm(),
                 GameScreen.GAME_WIDTH / 6 - (3 * length), midPointY / 6 + 1);
-        AssetLoader.font.draw(batcher, "" + myWorld.getBpm(),
+        AssetLoader.redFont.draw(batcher, "" + myWorld.getBpm(),
                 GameScreen.GAME_WIDTH / 6 - (3 * length), midPointY / 6);
     }
 

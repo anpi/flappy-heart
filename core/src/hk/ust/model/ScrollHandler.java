@@ -1,12 +1,11 @@
 package hk.ust.model;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
+import hk.ust.helper.AssetLoader;
 import hk.ust.screen.GameScreen;
 import hk.ust.world.GameWorld;
-import hk.ust.helper.AssetLoader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScrollHandler {
 

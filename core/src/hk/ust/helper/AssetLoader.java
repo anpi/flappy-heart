@@ -1,7 +1,5 @@
 package hk.ust.helper;
 
-import hk.ust.screen.GameScreen;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
@@ -19,7 +17,7 @@ public class AssetLoader {
 			ready, gameOver, highScore, scoreboard, star, noStar, retry;
 	public static Animation birdAnimation;
 	public static Sound dead, flap, coin, fall;
-	public static BitmapFont font, shadow, whiteFont;
+	public static BitmapFont font, redFont, shadow, whiteFont;
 	private static Preferences prefs;
 
 	public static void load() {
@@ -93,8 +91,11 @@ public class AssetLoader {
 		coin = Gdx.audio.newSound(Gdx.files.internal("data/coin.wav"));
 		fall = Gdx.audio.newSound(Gdx.files.internal("data/fall.wav"));
 
-		font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
-		font.setScale(.25f, -.25f);
+                font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
+                font.setScale(.25f, -.25f);
+                
+                redFont = new BitmapFont(Gdx.files.internal("data/redtext.fnt"));
+                redFont.setScale(.25f, -.25f);
 
 		whiteFont = new BitmapFont(Gdx.files.internal("data/whitetext.fnt"));
 		whiteFont.setScale(.1f, -.1f);
