@@ -27,8 +27,8 @@ import hk.ust.helper.AssetLoader;
 import hk.ust.helper.InputHandler;
 import hk.ust.ui.SimpleButton;
 
-public class GameRenderer {
 
+public class GameRenderer {
     private GameWorld myWorld;
     private OrthographicCamera cam;
     private ShapeRenderer shapeRenderer;
@@ -114,16 +114,17 @@ public class GameRenderer {
 
     private void drawSkulls() {
         for (Pipe p : pipes) {
-            batcher.draw(skullUp, p.getX() - 1, p.getY() + p.getHeight() - 14, 24, 14);
-            batcher.draw(skullDown, p.getX() - 1, p.getY() + p.getHeight() + 45, 24, 14);
+            batcher.draw(skullUp, p.getX() - 1, p.getY() + p.getHeight() - 14+(Pipe.ORIGINAL_VERTICAL_GAP-p.VERTICAL_GAP)/2, 24, 14);
+            batcher.draw(skullDown, p.getX() - 1, p.getY() + p.getHeight() + p.VERTICAL_GAP-(Pipe.ORIGINAL_VERTICAL_GAP-p.VERTICAL_GAP)/2, 24, 14);
         }
     }
 
     private void drawPipes() {
         for (Pipe p : pipes) {
-            batcher.draw(bar, p.getX(), p.getY(), p.getWidth(), p.getHeight());
-            batcher.draw(bar, p.getX(), p.getY() + p.getHeight() + 45, p.getWidth(),
-                    midPointY + 66 - (p.getHeight() + 45));
+            batcher.draw(bar, p.getX(), p.getY(), p.getWidth(),
+            		p.getHeight()+(Pipe.ORIGINAL_VERTICAL_GAP-p.VERTICAL_GAP)/2);
+    		batcher.draw(bar, p.getX(), p.getY() + p.getHeight() + p.VERTICAL_GAP-(Pipe.ORIGINAL_VERTICAL_GAP-p.VERTICAL_GAP)/2,
+    				p.getWidth(), midPointY + 66 - (p.getY() + p.getHeight() + p.VERTICAL_GAP-(Pipe.ORIGINAL_VERTICAL_GAP-p.VERTICAL_GAP)/2));
         }
     }
 
@@ -308,4 +309,5 @@ public class GameRenderer {
     private int getDrawX(int itemWidth) {
         return (GameScreen.GAME_WIDTH - itemWidth) / 2;
     }
+
 }

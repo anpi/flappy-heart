@@ -35,7 +35,6 @@ public class ScrollHandler {
     }
 
     public void updateReady(float delta) {
-
         frontGrass.update(delta);
         backGrass.update(delta);
 
@@ -56,6 +55,7 @@ public class ScrollHandler {
         backGrass.update(delta);
         for (int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
+            pipe.setBmp(gameWorld.getBpm());
             pipe.update(delta);
             if (pipe.isScrolledLeft()) {
                 pipe.reset(pipes.get((i + pipes.size() - 1) % pipes.size()).getTailX()

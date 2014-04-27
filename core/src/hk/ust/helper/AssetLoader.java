@@ -3,6 +3,8 @@ package hk.ust.helper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -27,7 +29,7 @@ public class AssetLoader {
 
 		logo = new TextureRegion(logoTexture, 0, 0, 512, 114);
 
-		texture = new Texture(Gdx.files.internal("data/texture.png"));
+		texture = new Texture(Gdx.files.internal("data/texture.png"));//modified texture.png
 		texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
 		playButtonUp = new TextureRegion(texture, 0, 83, 29, 16);
@@ -66,17 +68,39 @@ public class AssetLoader {
 		grass.flip(false, true);
 
 		birdDown = new TextureRegion(texture, 136, 0, 17, 12);
-		birdDown.flip(false, true);
+		birdDown.flip(false, true);	
+//		Pixmap pixmap1 = fillHeart(20,20);
+//		pixmap1.setColor( 0, 1, 0, 0.75f );
+//		pixmap1.fillCircle(4,4,5);
+//		pixmap1.fillCircle(13,4,5);
+//		pixmap1.fillTriangle(9, 18, 0, 9, 18, 9);
+//		birdDown=new TextureRegion(new Texture(pixmap1),0,0,20,20);
+//		birdDown.flip(false, true);
 
 		bird = new TextureRegion(texture, 153, 0, 17, 12);
 		bird.flip(false, true);
+//		Pixmap pixmap2 = fillHeart(18,18);
+//		pixmap2.setColor( 0, 1, 0, 0.75f );
+//		pixmap2.fillCircle(5,5,6);
+//		pixmap2.fillCircle(15,5,6);
+//		pixmap2.fillTriangle(10, 20, 0, 10, 20, 10);
+//		pixmap.dispose();
+//		bird = new TextureRegion(new Texture(pixmap2),0,0,20,20);
+//		bird.flip(false, true);
 
 		birdUp = new TextureRegion(texture, 170, 0, 17, 12);
 		birdUp.flip(false, true);
+//		Pixmap pixmap3 = fillHeart(20,20);
+//		pixmap3.setColor( 0, 1, 0, 0.75f );
+//		pixmap3.fillCircle(4,4,5);
+//		pixmap3.fillCircle(13,4,5);
+//		pixmap3.fillTriangle(9, 18, 0, 9, 18, 9);
+//		birdUp=new TextureRegion(new Texture(pixmap3),0,0,20,20);
+//		birdUp.flip(false, true);
 
 		TextureRegion[] birds = { birdDown, bird, birdUp };
-		birdAnimation = new Animation(0.06f, birds);
-		birdAnimation.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
+		birdAnimation = new Animation(0.06f, birds);//0.06f
+		birdAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
 		skullUp = new TextureRegion(texture, 192, 0, 24, 14);
 		// Create by flipping existing skullUp
@@ -109,6 +133,27 @@ public class AssetLoader {
 		if (!prefs.contains("highScore")) {
 			prefs.putInteger("highScore", 0);
 		}
+	}
+	
+	public static Pixmap fillHeart(int width,int height)
+	{
+		Pixmap pixmap=new Pixmap(width,height,Format.RGBA8888);
+		int x=0,y=0;
+		while(y<=height/2)
+		{
+			while(x<=width)
+			{
+				if((x-width/4)*(x-width/4)+(y-height/4)*(y-height/4)<=2*(width/4)*(width/4)||
+						(x-width*3/4)*(x-width*3/4)+(y-height/4)*(y-height/4)<=2*(width/4)*(width/4))
+				{
+					pixmap.drawPixel(x, y);
+					x++;
+				}
+			}
+			y++;				
+		}
+		pixmap.fillTriangle(0, y, width, y, width/2, height);
+		return pixmap;
 	}
 
 	public static void setHighScore(int val) {
