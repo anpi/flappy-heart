@@ -230,7 +230,7 @@ public class GameRenderer {
         shapeRenderer.begin(ShapeType.Filled);
 
         // Draw Background color
-        shapeRenderer.setColor(55 / 255.0f, 80 / 255.0f, 100 / 255.0f, 1);
+        shapeRenderer.setColor(200 / 255.0f, 200 / 255.0f, 200 / 255.0f, 1);
         shapeRenderer.rect(0, 0, GameScreen.GAME_WIDTH, midPointY + 66);
 
         // Draw Grass

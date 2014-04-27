@@ -99,7 +99,7 @@ public class AssetLoader {
 //		birdUp.flip(false, true);
 
 		TextureRegion[] birds = { birdDown, bird, birdUp };
-		birdAnimation = new Animation(0.06f, birds);//0.06f
+		birdAnimation = new Animation(0.3f, birds);//0.06f
 		birdAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
 		skullUp = new TextureRegion(texture, 192, 0, 24, 14);

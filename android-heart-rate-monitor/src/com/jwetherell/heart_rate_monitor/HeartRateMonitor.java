@@ -44,6 +44,10 @@ public class HeartRateMonitor extends Activity {
     private static double beats = 0;
     private static long startTime = 0;
 
+    private static long currentTime = 0;
+    private static long prevTime = 0;
+    private static double deltaTime = 0;
+    private static boolean bBeatingStarted = false;
 
     private static PreviewCallback previewCallback = new PreviewCallback() {
 
@@ -84,6 +88,24 @@ public class HeartRateMonitor extends Activity {
                 if (newType != currentType) {
                     beats++;
                     // Log.d(TAG, "BEAT!! beats="+beats);
+                    System.out.println("BEAT!! beats=" + beats);
+                    if (!bBeatingStarted) {
+                        bBeatingStarted = true;
+                        prevTime = System.currentTimeMillis();
+                        currentTime = prevTime;
+                    } else {
+                        prevTime = currentTime;
+                        currentTime = System.currentTimeMillis();
+                    }
+
+                    // in millisecs
+                    deltaTime = (currentTime - prevTime);
+
+                    System.out.println("Time since last beat: " + deltaTime);
+                    // Send delta info. for current beats
+                    IntensifierClass.getInstance().OnPulseDeltaCalculated(
+                            deltaTime);
+
                 }
             } else if (imgAvg > rollingAverage) {
                 newType = TYPE.GREEN;
