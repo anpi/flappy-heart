@@ -1,8 +1,8 @@
 package com.jwetherell.heart_rate_monitor;
 
 /**
- * This abstract class is used to process images.
- * 
+ * @link https://code.google.com/p/android-heart-rate-monitor/
+ * @license Apache License 2.0
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
 public abstract class ImageProcessing {

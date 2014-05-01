@@ -2,6 +2,8 @@ package hk.ust.flappyheart.android;
 
 /*
  * Sets the intensity state of the game based on the heart beat delta time input
+ * 
+ * XXX: Why is this a singleton? /anpi 2014-05-01
  */
 public class Intensifier {
 
