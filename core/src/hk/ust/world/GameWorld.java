@@ -1,18 +1,17 @@
 package hk.ust.world;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import hk.ust.helper.AssetLoader;
+import hk.ust.model.Bird;
+import hk.ust.model.ScrollHandler;
 
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
-
-import hk.ust.model.Bird;
-import hk.ust.model.ScrollHandler;
-import hk.ust.helper.AssetLoader;
+import com.badub.heartrate.monitor.HeartMonitor;
 
 public class GameWorld {
 
     private Bird bird;
-    private AtomicInteger bpm;
+    private HeartMonitor monitor;
     private ScrollHandler scroller;
     private Rectangle ground;
     private int score = 0;
@@ -26,18 +25,18 @@ public class GameWorld {
         MENU, READY, RUNNING, GAMEOVER, HIGHSCORE
     }
 
-    public GameWorld(int midPointY, AtomicInteger bpm) {
+    public GameWorld(int midPointY, HeartMonitor monitor) {
         currentState = GameState.MENU;
         this.midPointY = midPointY;
         bird = new Bird(33, midPointY - 5, 17, 12);
         // The grass should start 66 pixels below the midPointY
         scroller = new ScrollHandler(this, midPointY + 66);
         ground = new Rectangle(0, midPointY + 66, 137, 11);
-        this.bpm = bpm;
+        this.monitor = monitor;
     }
 
     public int getBpm() {
-        return bpm.get();
+        return monitor.getBpm();
     }
 
     public void update(float delta) {

@@ -1,45 +1,41 @@
-package com.badu.heartrate.monitor;
+package com.badub.heartrate.monitor;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class HeartMonitorStandard implements HeartMonitor {
-
+/**
+ * @link https://code.google.com/p/android-heart-rate-monitor/
+ * @license Apache License 2.0
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
+public class HeartMonitorOriginal implements HeartMonitor {
+    private AtomicBoolean processing = new AtomicBoolean(false);
     private int averageIndex = 0;
     private final int averageArraySize = 4;
     private final int[] averageArray = new int[averageArraySize];
+
     private int beatsIndex = 0;
     private final int beatsArraySize = 3;
     private final int[] beatsArray = new int[beatsArraySize];
     private double beats = 0;
     private long startTime = 0;
-    private boolean beat = false;
-    private int beatsAvg = -1;
-    private final AtomicBoolean processing = new AtomicBoolean(false);
-    private String debug = "";
 
-    public HeartMonitorStandard() {
+    public static enum TYPE {
+        GREEN, RED
+    };
 
-    }
+    private static TYPE currentType = TYPE.GREEN;
 
+    private AtomicInteger bpm = new AtomicInteger();
+
+    @Override
     public void addSample(byte[] data, int width, int height) {
-
-        // Prevent multiprocessing
-        if (!processing.compareAndSet(false, true))
-            return;
-
-        // Compute average red value
-        int imgAvg = ImageProcessing.decodeYUV420SPtoRedAvg(data.clone(),
-                height, width);
-
-        debug = String.valueOf(imgAvg);
-
-        // Stop if extreme value
+        int imgAvg = ImageProcessing.decodeYUV420SPtoRedAvg(data.clone(), height, width);
         if (imgAvg == 0 || imgAvg == 255) {
             processing.set(false);
             return;
         }
 
-        // Compute rolling average
         int averageArrayAvg = 0;
         int averageArrayCnt = 0;
         for (int i = 0; i < averageArray.length; i++) {
@@ -48,34 +44,31 @@ public class HeartMonitorStandard implements HeartMonitor {
                 averageArrayCnt++;
             }
         }
+
         int rollingAverage = (averageArrayCnt > 0) ? (averageArrayAvg / averageArrayCnt)
                 : 0;
-
-        // Determine if beat
+        TYPE newType = currentType;
         if (imgAvg < rollingAverage) {
-            if (!beat) {
+            newType = TYPE.RED;
+            if (newType != currentType) {
                 beats++;
-                beat = true;
+                // Log.d(TAG, "BEAT!! beats="+beats);
             }
         } else if (imgAvg > rollingAverage) {
-            beat = false;
+            newType = TYPE.GREEN;
         }
 
-        // Add entry to average color history
-        if (averageIndex == averageArraySize)
+        if (averageIndex == averageArraySize) {
             averageIndex = 0;
+        }
         averageArray[averageIndex] = imgAvg;
         averageIndex++;
 
-        // Temporal computations
         long endTime = System.currentTimeMillis();
         double totalTimeInSecs = (endTime - startTime) / 1000d;
-
-        // Update BPM every 10 seconds
         if (totalTimeInSecs >= 10) {
             double bps = (beats / totalTimeInSecs);
             int dpm = (int) (bps * 60d);
-            // Reset if unrealistic value
             if (dpm < 30 || dpm > 180) {
                 startTime = System.currentTimeMillis();
                 beats = 0;
@@ -83,13 +76,12 @@ public class HeartMonitorStandard implements HeartMonitor {
                 return;
             }
 
-            // Add to beats history
-            if (beatsIndex == beatsArraySize)
+            if (beatsIndex == beatsArraySize) {
                 beatsIndex = 0;
+            }
             beatsArray[beatsIndex] = dpm;
             beatsIndex++;
 
-            // Compute beat average
             int beatsArrayAvg = 0;
             int beatsArrayCnt = 0;
             for (int i = 0; i < beatsArray.length; i++) {
@@ -98,27 +90,32 @@ public class HeartMonitorStandard implements HeartMonitor {
                     beatsArrayCnt++;
                 }
             }
-            beatsAvg = (beatsArrayAvg / beatsArrayCnt);
+            int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
+            bpm.set(beatsAvg);
             startTime = System.currentTimeMillis();
             beats = 0;
         }
         processing.set(false);
     }
 
+    @Override
     public boolean isBeat() {
-        return beat;
+        // FIXME not implemented (maybe throw an exception?)
+        return false;
     }
 
-    public int getBPM() {
-        return beatsAvg;
+    @Override
+    public int getBpm() {
+        return bpm.get();
     }
 
+    @Override
     public String getDebugInfo() {
-        return debug;
+        return null;
     }
 
+    @Override
     public void reset() {
-        startTime = System.currentTimeMillis();
+        
     }
-
 }

@@ -1,25 +1,24 @@
 package hk.ust.flappyheart;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import hk.ust.helper.AssetLoader;
 import hk.ust.screen.SplashScreen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badub.heartrate.monitor.HeartMonitor;
 
 public class FlappyHeart extends Game {
     SpriteBatch batch;
     Texture img;
-    private AtomicInteger bpm;
+    private HeartMonitor monitor;
     
-    public FlappyHeart(AtomicInteger bpm) {
-        this.bpm = bpm;
+    public FlappyHeart(HeartMonitor monitor) {
+        this.monitor = monitor;
     }
     
-    public AtomicInteger getBpm() {
-        return bpm;
+    public HeartMonitor getHeartMonitor() {
+        return monitor;
     }
 
     @Override

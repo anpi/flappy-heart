@@ -1,7 +1,5 @@
 package hk.ust.flappyheart.android;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import hk.ust.flappyheart.FlappyHeart;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -18,6 +16,8 @@ import android.widget.LinearLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badub.heartrate.monitor.HeartMonitor;
+import com.badub.heartrate.monitor.HeartMonitorOriginal;
 import com.jwetherell.heart_rate_monitor.SurfaceHolderCallback;
 
 /**
@@ -27,19 +27,20 @@ import com.jwetherell.heart_rate_monitor.SurfaceHolderCallback;
 public class FlappyHeartApp extends AndroidApplication {
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
-    private SurfaceHolderCallback monitor;
+    private SurfaceHolderCallback callback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        
+        HeartMonitor monitor = new HeartMonitorOriginal();
 
-        AtomicInteger bpm = new AtomicInteger();
-        View gameView = initializeForView(new FlappyHeart(bpm), config);
+        View gameView = initializeForView(new FlappyHeart(monitor), config);
         SurfaceView preview = new SurfaceView(getApplication());
         previewHolder = preview.getHolder();
-        monitor = new SurfaceHolderCallback(camera, previewHolder, bpm);
-        previewHolder.addCallback(monitor);
+        callback = new SurfaceHolderCallback(camera, previewHolder, monitor);
+        previewHolder.addCallback(callback);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -65,12 +66,12 @@ public class FlappyHeartApp extends AndroidApplication {
     @Override
     public void onResume() {
         super.onResume();
-        monitor.onResume();
+        callback.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        monitor.onPause();
+        callback.onPause();
     }
 }

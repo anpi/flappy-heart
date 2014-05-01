@@ -1,13 +1,12 @@
 package hk.ust.screen;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import hk.ust.helper.InputHandler;
+import hk.ust.world.GameRenderer;
+import hk.ust.world.GameWorld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-
-import hk.ust.world.GameRenderer;
-import hk.ust.world.GameWorld;
-import hk.ust.helper.InputHandler;
+import com.badub.heartrate.monitor.HeartMonitor;
 
 public class GameScreen implements Screen {
 	public static final int GAME_WIDTH = 250;
@@ -18,7 +17,7 @@ public class GameScreen implements Screen {
 	private GameRenderer renderer;
 	private float runTime;
 
-	public GameScreen(AtomicInteger bpm) {
+	public GameScreen(HeartMonitor monitor) {
 		float screenWidth = Gdx.graphics.getWidth();
 		float screenHeight = Gdx.graphics.getHeight();
 		
@@ -27,7 +26,7 @@ public class GameScreen implements Screen {
 		float gameHeight = screenHeight / (screenWidth / gameWidth);
 		int midPointY = (int) (gameHeight / 2);
 
-		world = new GameWorld(midPointY, bpm);
+		world = new GameWorld(midPointY, monitor);
 		Gdx.input.setInputProcessor(new InputHandler(world, screenWidth / gameWidth, screenHeight / gameHeight));
 		renderer = new GameRenderer(world, (int) gameHeight, midPointY);
 		world.setRenderer(renderer);

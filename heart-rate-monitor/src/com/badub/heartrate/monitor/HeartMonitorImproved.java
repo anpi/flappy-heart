@@ -1,4 +1,4 @@
-package com.badu.heartrate.monitor;
+package com.badub.heartrate.monitor;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -141,7 +141,7 @@ public class HeartMonitorImproved implements HeartMonitor {
         return beat;
     }
 
-    public int getBPM() {
+    public int getBpm() {
         return bpm;
     }
 

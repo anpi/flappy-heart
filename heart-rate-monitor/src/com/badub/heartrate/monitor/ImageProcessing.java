@@ -1,4 +1,4 @@
-package com.badu.heartrate.monitor;
+package com.badub.heartrate.monitor;
 
 /**
  * This abstract class is used to process images.

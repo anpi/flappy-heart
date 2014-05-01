@@ -68,6 +68,10 @@ project(":desktop") {
     }
 }
 
+project(":heart-rate-monitor") {
+    apply plugin: "java"
+}
+
 tasks.eclipse.doLast {
     delete ".project"
 }

@@ -1,7 +1,6 @@
 package com.jwetherell.heart_rate_monitor;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
@@ -9,23 +8,25 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 
+import com.badub.heartrate.monitor.HeartMonitor;
+
 public class SurfaceHolderCallback implements Callback {
     private Camera camera;
     private SurfaceHolder previewHolder;
     private static final String TAG = "SurfaceHolderCallback";
-    private AtomicInteger bpm;
+    private HeartMonitor monitor;
     
-    public SurfaceHolderCallback(Camera c, SurfaceHolder ph, AtomicInteger bpm) {
+    public SurfaceHolderCallback(Camera c, SurfaceHolder ph, HeartMonitor monitor) {
         this.camera = c;
         this.previewHolder = ph;
-        this.bpm = bpm;
+        this.monitor = monitor;
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         try {
             camera.setPreviewDisplay(previewHolder);
-            camera.setPreviewCallback(new CameraPreviewProcessor(bpm));
+            camera.setPreviewCallback(new HeartMonitorCallback(monitor));
         } catch (Throwable t) {
             Log.e(TAG, "Exception in setPreviewDisplay()", t);
         }
