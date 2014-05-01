@@ -103,6 +103,10 @@ public class HeartMonitorImproved implements HeartMonitor {
 			}
 
 			bpm = (int) (1000 * 60d / mean);
+			
+			if (bpm < 30 || bpm > 180)
+				bpm = -1;
+			
 			startTime = System.currentTimeMillis();
 		}
 		processing.set(false);
