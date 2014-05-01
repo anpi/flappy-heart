@@ -1,17 +1,20 @@
 package hk.ust.flappyheart.android;
 
+import java.util.List;
+
 import hk.ust.flappyheart.FlappyHeart;
-import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.hardware.Camera;
+import android.hardware.Camera.Size;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.util.Log;
+import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -23,11 +26,9 @@ public class FlappyHeartApp extends AndroidApplication {
     private static SurfaceView preview = null;
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
-    private static WakeLock wakeLock = null;
     
     private static final String TAG = "HeartRateMonitor";
     
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +38,14 @@ public class FlappyHeartApp extends AndroidApplication {
         preview = new SurfaceView(getApplication());
         previewHolder = preview.getHolder();
         previewHolder.addCallback(surfaceCallback);
-        previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // The camera must always be visible on screen to take pictures for preview.
-        FrameLayout.LayoutParams params = new android.widget.FrameLayout.LayoutParams(40, 40);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(5, size.y);
         preview.setLayoutParams(params);
         
         ViewGroup viewGroup = new LinearLayout(getApplication());
@@ -61,14 +63,15 @@ public class FlappyHeartApp extends AndroidApplication {
     @Override
     public void onResume() {
         super.onResume();
-        wakeLock.acquire();
         camera = Camera.open();
+        Camera.Parameters params = camera.getParameters();
+        params.setPictureSize(640, 480);
+        camera.setParameters(params);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        wakeLock.release();
         camera.setPreviewCallback(null);
         camera.stopPreview();
         camera.release();
@@ -91,7 +94,7 @@ public class FlappyHeartApp extends AndroidApplication {
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             Camera.Parameters parameters = camera.getParameters();
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            Camera.Size size = getSmallestPreviewSize(width, height, parameters);
+            Camera.Size size = getSmallestSize(parameters.getSupportedPreviewSizes());
             if (size != null) {
                 parameters.setPreviewSize(size.width, size.height);
                 Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
@@ -105,18 +108,14 @@ public class FlappyHeartApp extends AndroidApplication {
         }
     };
 
-    private static Camera.Size getSmallestPreviewSize(int width, int height, Camera.Parameters parameters) {
-        Camera.Size result = null;
+    private static Camera.Size getSmallestSize(List<Size> sizes) {
+        Camera.Size result = sizes.get(0);
 
-        for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-            if (size.width <= width && size.height <= height) {
-                if (result == null) {
-                    result = size;
-                } else {
-                    int resultArea = result.width * result.height;
-                    int newArea = size.width * size.height;
-                    if (newArea < resultArea) result = size;
-                }
+        for (Camera.Size size : sizes) {
+            if (size.width <= result.width && size.height <= result.height) {
+                int resultArea = result.width * result.height;
+                int newArea = size.width * size.height;
+                if (newArea < resultArea) result = size;
             }
         }
         return result;
