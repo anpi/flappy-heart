@@ -4,43 +4,45 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HeartMonitorImproved implements HeartMonitor {
 
-	private int averageIndex = 0;
-	private final int averageArraySize = 4;
+	private final int averageArraySize = 4;	// Buffer size for rolling average beat detection
+	private final int refArraySize = 10;	// Buffer size for the sample perio BPM average computation
+	private final float wishVariance = 100;		// Desired variance for the sample period standard deviation
+	private final float maxVariance = 120;		// Maxmimum variance for the sample period standard deviation
+	private final int minRed = 150;		// Minimal red value for the sample to be accepted
+	
 	private final int[] averageArray = new int[averageArraySize];
-
-	private final int beatArraySize = 200;
-	private int beatIndex = 0;
+	private int averageIndex = 0;
+	private final int beatArraySize = 100;
 	private long[] beatArray = new long[beatArraySize];
+	private int beatIndex = 0;
 	private long lastBeat;
-	private int beatCount = 0;
-
-	private final int refArraySize = 10;
-	private float maxVariance = 100;
-
-	private long startTime = 0;
-	private boolean beat = false;
-	private int bpm = -1;
-
+	private long calcTime;
 	private final AtomicBoolean processing = new AtomicBoolean(false);
-	private String debug = "";
+	
+	private boolean beat = false;
+	private int bpm = 0;
+	private long mean = 0;
+	private float sd = 0;
+	private int red_val = 0;
 
 	public HeartMonitorImproved() {
-		startTime = System.currentTimeMillis();
-		lastBeat = startTime;
+		calcTime = System.currentTimeMillis();
+		lastBeat = calcTime;
 	}
 
 	public void addSample(byte[] data, int width, int height) {
 
-		// Prevent multiprocessing
+		// Prevent parallel processing
 		if (!processing.compareAndSet(false, true))
 			return;
 
 		// Compute average red value
 		int imgAvg = ImageProcessing.decodeYUV420SPtoRedAvg(data.clone(),
 				height, width);
+		red_val = imgAvg; 
 
 		// Stop if extreme value
-		if (imgAvg == 0 || imgAvg == 255) {
+		if (imgAvg < minRed || imgAvg == 255) {
 			processing.set(false);
 			return;
 		}
@@ -64,7 +66,6 @@ public class HeartMonitorImproved implements HeartMonitor {
 				beatArray[beatIndex] = System.currentTimeMillis() - lastBeat;
 				beatIndex = (beatIndex + 1) % beatArraySize;
 				lastBeat = System.currentTimeMillis();
-				beatCount++;
 				beat = true;
 			}
 		} else if (imgAvg > rollingAverage) {
@@ -76,64 +77,51 @@ public class HeartMonitorImproved implements HeartMonitor {
 		averageIndex = (averageIndex + 1) % averageArraySize;
 
 		// Update BPM every 1 seconds
-		long endTime = System.currentTimeMillis();
-		double totalTimeInSecs = (endTime - startTime) / 1000d;
-		if (totalTimeInSecs >= 1) {
-			
-			if (beatCount <= refArraySize){
-				startTime = System.currentTimeMillis();
-				processing.set(false);
-				return;
-			}
-			
+		if ((System.currentTimeMillis() - calcTime) / 1000d >= 1) {
+						
 			long[] refArray = new long[refArraySize];
 			for (int i = 0; i < refArraySize; i++)
-				refArray[i] = beatArray[(beatIndex - i - 1 + beatArraySize)
-						% beatArraySize];
+				refArray[i] = beatArray[(beatIndex - i - 1 + beatArraySize) % beatArraySize];
 
-			long mean = 0;
 			int beatIter = refArraySize;
-			while (beatCount > beatIter) {
-				mean = mean(refArray);
-				int i = varCheck(refArray, mean, maxVariance);
-				if (i == -1)
+			while (beatArray[(beatIndex - beatIter + beatArraySize)% beatArraySize] > 0) {
+				calcMean(refArray);
+				int i = varianceCheck(refArray, mean, wishVariance);
+				if (i == -1 && true)
 					break;
 				refArray[i] = beatArray[(beatIndex - beatIter + beatArraySize)% beatArraySize];
 				beatIter ++;
 			}
-
+			
 			bpm = (int) (1000 * 60d / mean);
+			if (sd > maxVariance || bpm < 30 || bpm > 180)
+				bpm = 0;
 			
-			if (bpm < 30 || bpm > 180)
-				bpm = -1;
-			
-			startTime = System.currentTimeMillis();
+			calcTime = System.currentTimeMillis();
 		}
 		processing.set(false);
 	}
 
-	long mean(long[] a) {
+	private void calcMean(long[] a) {
 		long sum = 0;
 		for (long l : a)
 			sum += l;
-		return sum / a.length;
+		mean = sum / a.length;
 	}
 
-	int varCheck(long[] a, long mean, float max) {
-		double sd = 0;
+	private int varianceCheck(long[] a, long mean, float max) {
+		double temp = 0;
 		double max_diff = 0;
 		int max_ind = 0;
 		for (int i = 0; i < a.length; i++) {
 			double diff = a[i] - mean;
-			sd += diff * diff;
+			temp += diff * diff;
 			if (Math.abs(diff) > max_diff) {
 				max_diff = Math.abs(diff);
 				max_ind = i;
 			}
 		}
-		sd = Math.sqrt(sd / a.length);
-		sd = sd;
-		debug = String.valueOf(mean + " " + (float) sd);
+		sd = (float) Math.sqrt(temp / a.length);
 		if (sd < max)
 			return -1;
 		else
@@ -150,12 +138,10 @@ public class HeartMonitorImproved implements HeartMonitor {
 	}
 
 	public String getDebugInfo() {
-		return debug;
+		return String.format("%d %.0f %d", mean, sd, red_val);
 	}
 
 	public void reset() {
-		startTime = System.currentTimeMillis();
-		lastBeat = startTime;
 	}
 
 }
