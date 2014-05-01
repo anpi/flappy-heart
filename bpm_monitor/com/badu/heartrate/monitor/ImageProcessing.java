@@ -7,7 +7,7 @@ package com.badu.heartrate.monitor;
  */
 public abstract class ImageProcessing {
 
-    private static int decodeYUV420SPtoRedSum(byte[] yuv420sp, int width, int height) {
+    public static int decodeYUV420SPtoRedSum(byte[] yuv420sp, int width, int height) {
         if (yuv420sp == null) return 0;
 
         final int frameSize = width * height;
@@ -62,4 +62,5 @@ public abstract class ImageProcessing {
         int sum = decodeYUV420SPtoRedSum(yuv420sp, width, height);
         return (sum / frameSize);
     }
+    
 }
