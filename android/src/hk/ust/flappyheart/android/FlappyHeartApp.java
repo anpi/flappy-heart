@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.jwetherell.heart_rate_monitor.SurfaceHolderCallback;
+
 /**
  * 
  * @author aaltoan
@@ -27,7 +28,7 @@ public class FlappyHeartApp extends AndroidApplication {
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
     private SurfaceHolderCallback monitor;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,19 +43,19 @@ public class FlappyHeartApp extends AndroidApplication {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // The camera must always be visible on screen to take pictures for preview.
+        // The camera must always be visible on screen to take pictures for
+        // preview.
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(5, size.y);
         preview.setLayoutParams(params);
-        
+
         ViewGroup viewGroup = new LinearLayout(getApplication());
         viewGroup.addView(preview);
         viewGroup.addView(gameView);
         setContentView(viewGroup);
     }
-    
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

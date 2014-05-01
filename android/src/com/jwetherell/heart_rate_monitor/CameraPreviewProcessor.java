@@ -28,7 +28,7 @@ public class CameraPreviewProcessor implements PreviewCallback {
     };
 
     private static TYPE currentType = TYPE.GREEN;
-    
+
     private AtomicInteger bpm;
 
     public CameraPreviewProcessor(AtomicInteger bpm) {
@@ -37,11 +37,17 @@ public class CameraPreviewProcessor implements PreviewCallback {
 
     @Override
     public void onPreviewFrame(byte[] data, Camera cam) {
-        if (data == null) throw new NullPointerException();
+        if (data == null) {
+            throw new NullPointerException();
+        }
         Camera.Size size = cam.getParameters().getPreviewSize();
-        if (size == null) throw new NullPointerException();
+        if (size == null) {
+            throw new NullPointerException();
+        }
 
-        if (!processing.compareAndSet(false, true)) return;
+        if (!processing.compareAndSet(false, true)) {
+            return;
+        }
 
         int width = size.width;
         int height = size.height;
@@ -61,7 +67,8 @@ public class CameraPreviewProcessor implements PreviewCallback {
             }
         }
 
-        int rollingAverage = (averageArrayCnt > 0) ? (averageArrayAvg / averageArrayCnt) : 0;
+        int rollingAverage = (averageArrayCnt > 0) ? (averageArrayAvg / averageArrayCnt)
+                : 0;
         TYPE newType = currentType;
         if (imgAvg < rollingAverage) {
             newType = TYPE.RED;
@@ -73,7 +80,9 @@ public class CameraPreviewProcessor implements PreviewCallback {
             newType = TYPE.GREEN;
         }
 
-        if (averageIndex == averageArraySize) averageIndex = 0;
+        if (averageIndex == averageArraySize) {
+            averageIndex = 0;
+        }
         averageArray[averageIndex] = imgAvg;
         averageIndex++;
 
@@ -89,7 +98,9 @@ public class CameraPreviewProcessor implements PreviewCallback {
                 return;
             }
 
-            if (beatsIndex == beatsArraySize) beatsIndex = 0;
+            if (beatsIndex == beatsArraySize) {
+                beatsIndex = 0;
+            }
             beatsArray[beatsIndex] = dpm;
             beatsIndex++;
 

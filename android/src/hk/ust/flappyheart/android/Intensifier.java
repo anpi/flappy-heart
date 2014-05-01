@@ -94,8 +94,7 @@ public class Intensifier {
 
                 if (m_iSettingCounter == 3) {
                     // Raise trigger to apply corresponding intensity
-                    System.out.println("Intensity Level : "
-                            + m_eCurrentIntensityMode.toString());
+                    System.out.println("Intensity Level : " + m_eCurrentIntensityMode.toString());
 
                     // reset
                     m_iSettingCounter = 0;
