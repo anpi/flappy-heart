@@ -79,13 +79,13 @@ public class AssetLoader {
 
 		bird = new TextureRegion(texture, 153, 0, 17, 12);
 		bird.flip(false, true);
-//		Pixmap pixmap2 = fillHeart(18,18);
+//		Pixmap pixmap2 = fillHeart(10,10);
 //		pixmap2.setColor( 0, 1, 0, 0.75f );
 //		pixmap2.fillCircle(5,5,6);
 //		pixmap2.fillCircle(15,5,6);
 //		pixmap2.fillTriangle(10, 20, 0, 10, 20, 10);
 //		pixmap.dispose();
-//		bird = new TextureRegion(new Texture(pixmap2),0,0,20,20);
+//		bird = new TextureRegion(new Texture(pixmap2),0,0,10,10);
 //		bird.flip(false, true);
 
 		birdUp = new TextureRegion(texture, 170, 0, 17, 12);
@@ -135,26 +135,30 @@ public class AssetLoader {
 		}
 	}
 	
-	public static Pixmap fillHeart(int width,int height)
-	{
-		Pixmap pixmap=new Pixmap(width,height,Format.RGBA8888);
-		int x=0,y=0;
-		while(y<=height/2)
-		{
-			while(x<=width)
-			{
-				if((x-width/4)*(x-width/4)+(y-height/4)*(y-height/4)<=2*(width/4)*(width/4)||
-						(x-width*3/4)*(x-width*3/4)+(y-height/4)*(y-height/4)<=2*(width/4)*(width/4))
-				{
-					pixmap.drawPixel(x, y);
-					x++;
-				}
-			}
-			y++;				
-		}
-		pixmap.fillTriangle(0, y, width, y, width/2, height);
-		return pixmap;
-	}
+//	public static Pixmap fillHeart(int width,int height)
+//	{
+//		System.out.println("Filling Heart Area");
+//		Pixmap pixmap=new Pixmap(width,height,Format.RGBA8888);
+//		pixmap.setColor( 0, 1, 0, 0.75f );
+//		int x=0,y=0;
+//		while(y<height/2)
+//		{
+//			x=0;
+//			while(x<width)
+//			{
+//				if((x-width/4)*(x-width/4)+(y-height/4)*(y-height/4)<=(width/4)*(width/4)||
+//						(x-width*3/4)*(x-width*3/4)+(y-height/4)*(y-height/4)<=(width/4)*(width/4))
+//				{
+//					pixmap.drawPixel(x, y);
+//				}
+//				x++;
+//			}
+//			y++;	
+//			System.out.println("Loop: "+x+" "+y);
+//		}
+//		pixmap.fillTriangle(0, y, width, y, width/2, height);
+//		return pixmap;
+//	}
 
 	public static void setHighScore(int val) {
 		prefs.putInteger("highScore", val);
