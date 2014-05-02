@@ -16,8 +16,7 @@ public class SurfaceHolderCallback implements Callback {
     private static final String TAG = "SurfaceHolderCallback";
     private HeartMonitor monitor;
 
-    public SurfaceHolderCallback(Camera c, SurfaceHolder ph, HeartMonitor monitor) {
-        this.camera = c;
+    public SurfaceHolderCallback(SurfaceHolder ph, HeartMonitor monitor) {
         this.previewHolder = ph;
         this.monitor = monitor;
     }

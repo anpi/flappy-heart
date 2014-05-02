@@ -26,7 +26,6 @@ import com.jwetherell.heart_rate_monitor.SurfaceHolderCallback;
  */
 public class FlappyHeartApp extends AndroidApplication {
     private static SurfaceHolder previewHolder = null;
-    private static Camera camera = null;
     private SurfaceHolderCallback callback;
 
     @Override
@@ -39,7 +38,7 @@ public class FlappyHeartApp extends AndroidApplication {
         View gameView = initializeForView(new FlappyHeart(monitor), config);
         SurfaceView preview = new SurfaceView(getApplication());
         previewHolder = preview.getHolder();
-        callback = new SurfaceHolderCallback(camera, previewHolder, monitor);
+        callback = new SurfaceHolderCallback(previewHolder, monitor);
         previewHolder.addCallback(callback);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

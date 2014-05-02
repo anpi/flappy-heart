@@ -160,6 +160,6 @@ public class GameWorld {
     }
 
     public boolean isAdrelanineMode() {
-        return getBpm() > 70;
+        return getBpm() > 120;
     }
 }
