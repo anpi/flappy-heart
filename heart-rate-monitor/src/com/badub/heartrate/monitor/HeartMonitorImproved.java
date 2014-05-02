@@ -101,9 +101,10 @@ public class HeartMonitorImproved implements HeartMonitor {
                 beatIter++;
             }
 
-            bpm = (int) (1000 * 60d / mean);
-            if (sd > maxVariance || bpm < 30 || bpm > 180)
-                bpm = 0;
+            int newBpm = (int) (1000 * 60d / mean);
+            if (!(sd > maxVariance || newBpm < 30 || newBpm > 180)) {
+                bpm = newBpm;
+            }
 
             calcTime = System.currentTimeMillis();
         }

@@ -79,6 +79,9 @@ public class ScrollHandler {
     }
 
     public boolean collides(Bird bird) {
+        if (gameWorld.isAdrelanineMode()) {
+            return false;
+        }
         for (Pipe p : pipes) {
             if (!p.isScored() && p.getX() + (p.getWidth() / 2) < bird.getX() + bird.getWidth()) {
                 addScore(1);

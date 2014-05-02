@@ -24,6 +24,9 @@ public class SurfaceHolderCallback implements Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        if (camera == null) {
+            onResume();
+        }
         try {
             camera.setPreviewDisplay(previewHolder);
             camera.setPreviewCallback(new HeartMonitorCallback(monitor));

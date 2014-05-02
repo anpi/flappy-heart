@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badub.heartrate.monitor.HeartMonitor;
 
 public class GameWorld {
-
     private Bird bird;
     private HeartMonitor monitor;
     private ScrollHandler scroller;
@@ -160,4 +159,7 @@ public class GameWorld {
         this.renderer = renderer;
     }
 
+    public boolean isAdrelanineMode() {
+        return getBpm() > 70;
+    }
 }

@@ -43,8 +43,8 @@ public class GameRenderer {
     private List<Pipe> pipes;
 
     // Game Assets
-    private TextureRegion bg, grass, birdMid, skullUp, skullDown, bar, ready, logo, gameOver, highScore, scoreboard,
-            star, noStar, retry;
+    private TextureRegion bg, grass, skullUp, skullDown, skullUpTransparent, skullDownTransparent, bar, barTransparent,
+            ready, logo, gameOver, highScore, scoreboard, star, noStar, retry;
     private Animation birdAnimation;
 
     // Tween stuff
@@ -88,10 +88,12 @@ public class GameRenderer {
         bg = AssetLoader.bg;
         grass = AssetLoader.grass;
         birdAnimation = AssetLoader.birdAnimation;
-        birdMid = AssetLoader.bird;
         skullUp = AssetLoader.skullUp;
         skullDown = AssetLoader.skullDown;
+        skullUpTransparent = AssetLoader.skullUpTransparent;
+        skullDownTransparent = AssetLoader.skullDownTransparent;
         bar = AssetLoader.bar;
+        barTransparent = AssetLoader.barTransparent;
         ready = AssetLoader.ready;
         logo = AssetLoader.zbLogo;
         gameOver = AssetLoader.gameOver;
@@ -109,20 +111,23 @@ public class GameRenderer {
     }
 
     private void drawSkulls() {
+        TextureRegion currentSkullUp = (myWorld.isAdrelanineMode()) ? skullUpTransparent : skullUp;
+        TextureRegion currentSkullDown = (myWorld.isAdrelanineMode()) ? skullDownTransparent : skullDown;
         for (Pipe p : pipes) {
-            batcher.draw(skullUp, p.getX() - 1, p.getY() + p.getHeight() - 14
+            batcher.draw(currentSkullUp, p.getX() - 1, p.getY() + p.getHeight() - 14
                     + (Pipe.ORIGINAL_VERTICAL_GAP - p.VERTICAL_GAP) / 2, 24, 14);
-            batcher.draw(skullDown, p.getX() - 1, p.getY() + p.getHeight() + p.VERTICAL_GAP
+            batcher.draw(currentSkullDown, p.getX() - 1, p.getY() + p.getHeight() + p.VERTICAL_GAP
                     - (Pipe.ORIGINAL_VERTICAL_GAP - p.VERTICAL_GAP) / 2, 24, 14);
         }
     }
 
     private void drawPipes() {
+        TextureRegion currentBar = (myWorld.isAdrelanineMode()) ? barTransparent : bar;
         for (Pipe p : pipes) {
-            batcher.draw(bar, p.getX(), p.getY(), p.getWidth(), p.getHeight()
+            batcher.draw(currentBar, p.getX(), p.getY(), p.getWidth(), p.getHeight()
                     + (Pipe.ORIGINAL_VERTICAL_GAP - p.VERTICAL_GAP) / 2);
             batcher.draw(
-                    bar,
+                    currentBar,
                     p.getX(),
                     p.getY() + p.getHeight() + p.VERTICAL_GAP - (Pipe.ORIGINAL_VERTICAL_GAP - p.VERTICAL_GAP) / 2,
                     p.getWidth(),
@@ -138,12 +143,13 @@ public class GameRenderer {
     }
 
     private void drawBird(float runTime) {
+        Animation animation = (myWorld.isAdrelanineMode()) ? AssetLoader.birdGodAnimation : birdAnimation;
         if (bird.shouldntFlap()) {
-            batcher.draw(birdMid, bird.getX(), bird.getY(), bird.getWidth() / 2.0f, bird.getHeight() / 2.0f,
-                    bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
+            batcher.draw(animation.getKeyFrames()[1], bird.getX(), bird.getY(), bird.getWidth() / 2.0f,
+                    bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
 
         } else {
-            batcher.draw(birdAnimation.getKeyFrame(runTime), bird.getX(), bird.getY(), bird.getWidth() / 2.0f,
+            batcher.draw(animation.getKeyFrame(runTime), bird.getX(), bird.getY(), bird.getWidth() / 2.0f,
                     bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
         }
     }
@@ -229,7 +235,7 @@ public class GameRenderer {
         shapeRenderer.begin(ShapeType.Filled);
 
         // Draw Background color
-        shapeRenderer.setColor(200 / 255.0f, 200 / 255.0f, 200 / 255.0f, 1);
+        shapeRenderer.setColor(0x1e / 255.0f, 0xb1 / 255.0f, 0xeb / 255.0f, 1);
         shapeRenderer.rect(0, 0, GameScreen.GAME_WIDTH, midPointY + 66);
 
         // Draw Grass

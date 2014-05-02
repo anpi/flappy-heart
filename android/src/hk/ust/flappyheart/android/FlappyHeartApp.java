@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badub.heartrate.monitor.HeartMonitor;
-import com.badub.heartrate.monitor.HeartMonitorOriginal;
+import com.badub.heartrate.monitor.HeartMonitorImproved;
 import com.jwetherell.heart_rate_monitor.SurfaceHolderCallback;
 
 /**
@@ -34,7 +34,7 @@ public class FlappyHeartApp extends AndroidApplication {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
-        HeartMonitor monitor = new HeartMonitorOriginal();
+        HeartMonitor monitor = new HeartMonitorImproved();
 
         View gameView = initializeForView(new FlappyHeart(monitor), config);
         SurfaceView preview = new SurfaceView(getApplication());
