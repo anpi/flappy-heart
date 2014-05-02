@@ -9,58 +9,58 @@ import com.badlogic.gdx.Screen;
 import com.badub.heartrate.monitor.HeartMonitor;
 
 public class GameScreen implements Screen {
-	public static final int GAME_WIDTH = 250;
-	public static final int READY_WIDTH = 68;
-	public static final int SCORE_BOARD_WIDTH = 97;
+    public static final int GAME_WIDTH = 250;
+    public static final int READY_WIDTH = 68;
+    public static final int SCORE_BOARD_WIDTH = 97;
 
-	private GameWorld world;
-	private GameRenderer renderer;
-	private float runTime;
+    private GameWorld world;
+    private GameRenderer renderer;
+    private float runTime;
 
-	public GameScreen(HeartMonitor monitor) {
-		float screenWidth = Gdx.graphics.getWidth();
-		float screenHeight = Gdx.graphics.getHeight();
-		
-		float gameWidth = GAME_WIDTH;
+    public GameScreen(HeartMonitor monitor) {
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
 
-		float gameHeight = screenHeight / (screenWidth / gameWidth);
-		int midPointY = (int) (gameHeight / 2);
+        float gameWidth = GAME_WIDTH;
 
-		world = new GameWorld(midPointY, monitor);
-		Gdx.input.setInputProcessor(new InputHandler(world, screenWidth / gameWidth, screenHeight / gameHeight));
-		renderer = new GameRenderer(world, (int) gameHeight, midPointY);
-		world.setRenderer(renderer);
-	}
+        float gameHeight = screenHeight / (screenWidth / gameWidth);
+        int midPointY = (int) (gameHeight / 2);
 
-	@Override
-	public void render(float delta) {
-		runTime += delta;
-		world.update(delta);
-		renderer.render(delta, runTime);
-	}
+        world = new GameWorld(midPointY, monitor);
+        Gdx.input.setInputProcessor(new InputHandler(world, screenWidth / gameWidth, screenHeight / gameHeight));
+        renderer = new GameRenderer(world, (int) gameHeight, midPointY);
+        world.setRenderer(renderer);
+    }
 
-	@Override
-	public void resize(int width, int height) {
-	}
+    @Override
+    public void render(float delta) {
+        runTime += delta;
+        world.update(delta);
+        renderer.render(delta, runTime);
+    }
 
-	@Override
-	public void show() {
-	}
+    @Override
+    public void resize(int width, int height) {
+    }
 
-	@Override
-	public void hide() {
-	}
+    @Override
+    public void show() {
+    }
 
-	@Override
-	public void pause() {
-	}
+    @Override
+    public void hide() {
+    }
 
-	@Override
-	public void resume() {
-	}
+    @Override
+    public void pause() {
+    }
 
-	@Override
-	public void dispose() {
-	}
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void dispose() {
+    }
 
 }

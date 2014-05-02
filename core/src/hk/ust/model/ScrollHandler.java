@@ -19,8 +19,7 @@ public class ScrollHandler {
     public ScrollHandler(GameWorld gameWorld, float yPos) {
         this.gameWorld = gameWorld;
         frontGrass = new Grass(0, yPos, GameScreen.GAME_WIDTH, 11, SCROLL_SPEED);
-        backGrass = new Grass(frontGrass.getTailX(), yPos,
-                GameScreen.GAME_WIDTH, 11, SCROLL_SPEED);
+        backGrass = new Grass(frontGrass.getTailX(), yPos, GameScreen.GAME_WIDTH, 11, SCROLL_SPEED);
 
         pipes = new ArrayList<Pipe>();
         int pipeCount = GameScreen.GAME_WIDTH / PIPE_GAP;
@@ -29,8 +28,7 @@ public class ScrollHandler {
             if (i > 0) {
                 lastPipeX = pipes.get(i - 1).getTailX();
             }
-            pipes.add(new Pipe(lastPipeX + i * PIPE_GAP, 0, 22, 60,
-                    SCROLL_SPEED, yPos));
+            pipes.add(new Pipe(lastPipeX + i * PIPE_GAP, 0, 22, 60, SCROLL_SPEED, yPos));
         }
     }
 
@@ -58,8 +56,7 @@ public class ScrollHandler {
             pipe.setBmp(gameWorld.getBpm());
             pipe.update(delta);
             if (pipe.isScrolledLeft()) {
-                pipe.reset(pipes.get((i + pipes.size() - 1) % pipes.size()).getTailX()
-                        + PIPE_GAP);
+                pipe.reset(pipes.get((i + pipes.size() - 1) % pipes.size()).getTailX() + PIPE_GAP);
             }
         }
 
@@ -83,9 +80,7 @@ public class ScrollHandler {
 
     public boolean collides(Bird bird) {
         for (Pipe p : pipes) {
-            if (!p.isScored()
-                    && p.getX() + (p.getWidth() / 2) < bird.getX()
-                            + bird.getWidth()) {
+            if (!p.isScored() && p.getX() + (p.getWidth() / 2) < bird.getX() + bird.getWidth()) {
                 addScore(1);
                 p.setScored(true);
                 AssetLoader.coin.play();

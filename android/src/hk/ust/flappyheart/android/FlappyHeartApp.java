@@ -33,7 +33,7 @@ public class FlappyHeartApp extends AndroidApplication {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        
+
         HeartMonitor monitor = new HeartMonitorOriginal();
 
         View gameView = initializeForView(new FlappyHeart(monitor), config);

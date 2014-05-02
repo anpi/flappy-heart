@@ -15,7 +15,7 @@ public class SurfaceHolderCallback implements Callback {
     private SurfaceHolder previewHolder;
     private static final String TAG = "SurfaceHolderCallback";
     private HeartMonitor monitor;
-    
+
     public SurfaceHolderCallback(Camera c, SurfaceHolder ph, HeartMonitor monitor) {
         this.camera = c;
         this.previewHolder = ph;
@@ -56,19 +56,20 @@ public class SurfaceHolderCallback implements Callback {
             if (size.width <= result.width && size.height <= result.height) {
                 int resultArea = result.width * result.height;
                 int newArea = size.width * size.height;
-                if (newArea < resultArea) result = size;
+                if (newArea < resultArea)
+                    result = size;
             }
         }
         return result;
     }
-    
+
     public void onResume() {
         camera = Camera.open();
         Camera.Parameters params = camera.getParameters();
         params.setPictureSize(640, 480);
         camera.setParameters(params);
     }
-    
+
     public void onPause() {
         camera.setPreviewCallback(null);
         camera.stopPreview();

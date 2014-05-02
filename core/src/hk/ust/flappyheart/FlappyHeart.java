@@ -12,11 +12,11 @@ public class FlappyHeart extends Game {
     SpriteBatch batch;
     Texture img;
     private HeartMonitor monitor;
-    
+
     public FlappyHeart(HeartMonitor monitor) {
         this.monitor = monitor;
     }
-    
+
     public HeartMonitor getHeartMonitor() {
         return monitor;
     }
